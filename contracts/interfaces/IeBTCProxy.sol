@@ -13,30 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity ^0.5.0;
+pragma solidity 0.5.16;
 
-interface IEnergiToken {
+interface IeBTCProxy {
 
-    function owner() external view returns (address);
-
-    function name() external view returns (string memory);
-
-    function symbol() external view returns (string memory);
-
-    function decimals() external view returns (uint8);
-
-    function initialized() external view returns (bool);
-
-    function initialize(
-        address _owner,
-        string calldata _name,
-        string calldata _symbol,
-        uint8 _decimals
-    ) external;
-
-    function setOwner(address _owner) external;
-
-    function mint(address recipient, uint amount) external;
-
-    function burn(address recipient, uint amount) external;
+    function proxyOwner() external view returns (address);
+    function delegate() external view returns (address);
+    function setProxyOwner(address _owner) external;
+    function upgradeDelegate(address _delegate) external;
 }

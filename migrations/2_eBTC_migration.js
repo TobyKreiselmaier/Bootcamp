@@ -1,26 +1,23 @@
-const EnergiToken = artifacts.require("EnergiToken");
-const EnergiTokenProxy = artifacts.require("EnergiTokenProxy");
-const EnergiTokenUpgrade = artifacts.require("EnergiTokenUpgrade");
-const EnergiTokenUpgrade2 = artifacts.require("EnergiTokenUpgrade2");
-
+const eBTC = artifacts.require("eBTC");
+const eBTCProxy = artifacts.require("eBTCProxy");
 
 module.exports = function (deployer, network, accounts) {
   const owner = accounts[0]
-  console.log('\nOwner address: ' + owner + '\n')
-  console.log('\nDeploying EnergiToken contract\n')
+  console.log('\n Owner address: ' + owner + '\n')
+  console.log('\n Deploying eBTC contract\n')
 
-  deployer.deploy(EnergiToken).then(function(token) {
-    console.log('\nEnergi ERC20 token address: ' + token.address + '\n')
-    console.log('\nDeploying EnergiTokenProxy contract\n')
+  deployer.deploy(eBTC).then(function(token) {
+    console.log('\n eBTC token address: ' + token.address + '\n')
+    console.log('\n Deploying eBTCProxy contract\n')
 
-    return deployer.deploy(EnergiTokenProxy, owner, token.address).then(async function(proxy) {
+    return deployer.deploy(eBTCProxy, owner, token.address).then(async function(proxy) {
       const proxyOwner = await proxy.proxyOwner();
       const delegate = await proxy.delegate();
-      console.log('\nProxy address: ' + proxy.address)
+      console.log('\n Proxy address: ' + proxy.address)
       console.log('\n Owner: ' + proxyOwner)
       console.log('\n Delegate: ' + delegate)
 
-      console.log('\n\nInitializing Energi ERC20 token implementation through proxy\n')
+      console.log('\n\n Initializing eBTC ERC20 token implementation through proxy\n')
 
       return EnergiToken.at(proxy.address).then(async function(impl) {
         await impl.initialize(owner, 'Energi', 'NRGT', 18);
@@ -36,13 +33,13 @@ module.exports = function (deployer, network, accounts) {
         console.log('\n Symbol: ' + symbol)
         console.log('\n Decimals: ' + decimals)
 
-        console.log('\nDeploying EnergiTokenUpgrade contract\n')
+        console.log('\n Deploying EnergiTokenUpgrade contract\n')
 
         return deployer.deploy(EnergiTokenUpgrade).then(async function(tokenUpgrade) {
 
-          console.log('\nEnergi ERC20 token upgrade address: ' + tokenUpgrade.address + '\n')
+          console.log('\n Energi ERC20 token upgrade address: ' + tokenUpgrade.address + '\n')
 
-          console.log('\nUpgrading Energi ERC20 token implementation\n')
+          console.log('\n Upgrading Energi ERC20 token implementation\n')
 
           await proxy.upgradeDelegate(tokenUpgrade.address);
 
@@ -50,7 +47,7 @@ module.exports = function (deployer, network, accounts) {
 
           console.log('\n New Delegate: ' + newDelegate)
 
-          console.log('\n\nInitializing Energi ERC20 token upgrade implementation through proxy\n')
+          console.log('\n\n Initializing Energi ERC20 token upgrade implementation through proxy\n')
 
           const vault = accounts[1]
 
@@ -68,13 +65,13 @@ module.exports = function (deployer, network, accounts) {
             console.log('\n vault: ' + redemptionVault)
 
 
-            console.log('\nDeploying EnergiTokenUpgrade2 contract\n')
+            console.log('\n Deploying EnergiTokenUpgrade2 contract\n')
 
             return deployer.deploy(EnergiTokenUpgrade2).then(async function(tokenUpgrade2) {
 
-              console.log('\nEnergi ERC20 token upgrade 2 address: ' + tokenUpgrade2.address + '\n')
+              console.log('\n Energi ERC20 token upgrade 2 address: ' + tokenUpgrade2.address + '\n')
 
-              console.log('\nUpgrading Energi ERC20 token implementation\n')
+              console.log('\n Upgrading Energi ERC20 token implementation\n')
 
               await proxy.upgradeDelegate(tokenUpgrade2.address);
 
@@ -82,7 +79,7 @@ module.exports = function (deployer, network, accounts) {
 
               console.log('\n New Delegate: ' + newDelegate)
 
-              console.log('\n\nSetting Energi ERC20 token upgrade 2 name and symbol through proxy\n')
+              console.log('\n\n Setting Energi ERC20 token upgrade 2 name and symbol through proxy\n')
               const NAME = 'Energi Token';
               const SYMBOL = 'NRGE';
 

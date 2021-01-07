@@ -13,46 +13,44 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity ^0.5.0;
+pragma solidity 0.5.16;
 
-import './interfaces/IEnergiTokenUpgrade.sol';
-import './ERC20Upgrade.sol';
+import './interfaces/IeBTC.sol';
+import './ERC20.sol';
 
-contract EnergiTokenUpgrade is ERC20Upgrade, IEnergiTokenUpgrade {
+/**
+ * @title Implementation of the IeBTC{} interface.
+ */
 
-    address public owner; // Initialised on previous impl
+contract eBTC is ERC20, IeBTC {
 
-    string public name; // Initialised on previous impl
-
-    string public symbol; // Initialised on previous impl
-
-    uint8 public decimals; // Initialised on previous impl
-
-    bool public initialized = true; // Previous impl was already initialised
-
+    /* Variables */
+    address public owner;
     address public vault;
+    string public name;
+    string public symbol;
+    uint8 public decimals;
+    uint256 public minRedemptionAmount;
+    bool public initialized = false; // There is no previous impl yet
+    bool public upgradeInitialized = false; // There is no previous upgrade yet
 
-    uint public minRedemptionAmount;
-
-    bool public upgradeInitialized = false;
-
+    /* Modifier */
     modifier onlyOwner {
-        require(msg.sender == owner, 'EnergiToken: FORBIDDEN');
+        require(msg.sender == owner, 'eBTC: FORBIDDEN');
         _;
     }
 
-    function initializeUpgrade(
-        address _vault,
-        uint _minRedemptionAmount
-    ) external {
-        require(upgradeInitialized == false, 'EnergiTokenUpgrade: ALREADY_INITIALIZED');
-        vault = _vault;
-        minRedemptionAmount = _minRedemptionAmount;
-        upgradeInitialized = true;
-    }
-
+    /* External Functions */
     function setOwner(address _owner) external onlyOwner {
         owner = _owner;
+    }
+
+    function setName(string calldata _name) external onlyOwner {
+        name = _name;
+    }
+
+    function setSymbol(string calldata _symbol) external onlyOwner {
+        symbol = _symbol;
     }
 
     function setVault(address _vault) external onlyOwner {
@@ -76,6 +74,7 @@ contract EnergiTokenUpgrade is ERC20Upgrade, IEnergiTokenUpgrade {
             require(amount >= minRedemptionAmount, "EnergiToken: redemption amount too small");
         }
         _transfer(_msgSender(), recipient, amount);
+        emit Approval(_msgSender(), recipient, amount);
         return true;
     }
 

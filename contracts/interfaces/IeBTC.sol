@@ -13,39 +13,44 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity ^0.5.0;
+pragma solidity 0.5.16;
 
-interface IEnergiTokenUpgrade2 {
+/**
+ * @title Interface of the eBTC token.
+ */
 
+interface IeBTC {
+
+    /* Getter Functions for state variables */
     function owner() external view returns (address);
-
-    function name() external view returns (string memory);
-
-    function symbol() external view returns (string memory);
-
-    function decimals() external view returns (uint8);
-
-    function initialized() external view returns (bool);
-
     function vault() external view returns (address);
-
-    function minRedemptionAmount() external view returns (uint);
-
+    function name() external view returns (string memory);
+    function symbol() external view returns (string memory);
+    function decimals() external view returns (uint8);
+    function minRedemptionAmount() external view returns (uint256);
+    function initialized() external view returns (bool);
     function upgradeInitialized() external view returns (bool);
 
+    /* Setter Functions for state variables for contract owner only */
     function setOwner(address _owner) external;
-
+    function setName(string calldata _name) external;
     function setSymbol(string calldata _symbol) external;
-
     function setVault(address _vault) external;
+    function setMinRedemptionAmount(uint256 _minRedemptionAmount) external;
 
-    function setMinRedemptionAmount(uint _minRedemptionAmount) external;
+    /* External Functions */
+    /**
+     * @dev Call the internal function in the parent contract ERC20{}.
+     */
+    function mint(address recipient, uint256 amount) external;
 
-    function mint(address recipient, uint amount) external;
+    /**
+     * @dev Call the internal function in the parent contract ERC20{}.
+     */
+    function burn(address account, uint256 amount) external;
 
-    function burn(address recipient, uint amount) external;
-
-    function transfer(address recipient, uint256 amount) external returns (bool);
-
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+    /**
+     * @dev Call the internal function in the parent contract ERC20{}.
+     */
+    function burnFrom(address sender, address account, uint256 amount) external;
 }

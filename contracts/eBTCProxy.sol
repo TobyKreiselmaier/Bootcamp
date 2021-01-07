@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity ^0.5.0;
+pragma solidity 0.5.16;
 
-import './interfaces/IEnergiTokenProxy.sol';
+import './interfaces/IeBTCProxy.sol';
 
-contract EnergiTokenProxy is IEnergiTokenProxy {
+contract eBTCProxy is IeBTCProxy {
 
     address public delegate;
 
     address public proxyOwner;
 
     modifier onlyProxyOwner {
-        require(msg.sender == proxyOwner, 'EnergiTokenProxy: FORBIDDEN');
+        require(msg.sender == proxyOwner, 'eBTCProxy: FORBIDDEN');
         _;
     }
 
