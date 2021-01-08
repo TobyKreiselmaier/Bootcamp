@@ -19,9 +19,8 @@ import './interfaces/IeBTCProxy.sol';
 
 contract eBTCProxy is IeBTCProxy {
 
-    address public delegate;
-
     address public proxyOwner;
+    address public delegate;
 
     modifier onlyProxyOwner {
         require(msg.sender == proxyOwner, 'eBTCProxy: FORBIDDEN');
@@ -37,7 +36,7 @@ contract eBTCProxy is IeBTCProxy {
         proxyOwner = _owner;
     }
 
-    function upgradeDelegate(address _delegate) external onlyProxyOwner {
+    function setDelegate(address _delegate) external onlyProxyOwner {
         delegate = _delegate;
     }
 

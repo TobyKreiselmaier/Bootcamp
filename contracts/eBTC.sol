@@ -32,7 +32,6 @@ contract eBTC is ERC20, IeBTC {
     uint8 public decimals;
     uint256 public minRedemptionAmount;
     bool public initialized = false; // There is no previous impl yet
-    bool public upgradeInitialized = false; // There is no previous upgrade yet
 
     /* Modifier */
     modifier onlyOwner {
